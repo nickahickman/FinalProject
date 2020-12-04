@@ -1,8 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<h1>Welcome to LRNR!</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<h3>Search</h3>
+<form action="WikiSearch">
+    <label for="Wikisearch">Seach Wikipedia: </label>
+    <select name="query">
+        <option value="a">a</option>
+        <option value="b">b</option>
+    </select>
+    <input class="btn-outline-primary" type="submit"  />
+</form>
+
+
+<form action="NewsSearch">
+    <label for="News">Seach News: </label>
+    <select name="query">
+        <option value="Business">Business</option>
+        <option value="Politics">Politics</option>
+        <option value="Sports">Sports</option>
+        <input class="btn-outline-primary" type="submit"  />
+    </select>
+</form>
+
