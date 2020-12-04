@@ -1,0 +1,10 @@
+﻿@model WikipediaSearchRoot<p>@Model.query.searchinfo.totalhits results were found!</p>@foreach (Search item in Model.query.search)
+{
+    <p>Title: @item.title</p>
+    <p>Page Id:@item.pageid</p>
+    <p>Size: @item.size</p>
+    <p>Word Count:@item.wordcount</p>
+    <p>Info: @item.snippet</p>
+    <p>Last Updated: @item.timestamp.ToShortDateString()</p>
+    <hr />
+}
