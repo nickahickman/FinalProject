@@ -3,12 +3,9 @@
 
 
 <h3>Search</h3>
-<form action="WikiSearch">
+<form asp-action="WikiSearch">
     <label for="Wikisearch">Seach Wikipedia: </label>
-    <select name="query">
-        <option value="a">a</option>
-        <option value="b">b</option>
-    </select>
+    <input type="text" name="Wikiquery" required />
     <input class="btn-outline-primary" type="submit"  />
 </form>
 
