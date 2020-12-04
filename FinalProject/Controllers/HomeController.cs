@@ -11,7 +11,13 @@ namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
-       
+        private readonly BingNewsDAL _dal;
+
+        public HomeController(BingNewsDAL dal)
+        {
+            _dal = dal;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -21,7 +27,16 @@ namespace FinalProject.Controllers
         {
             return View();
         }
-        
+
+        public async Task<IActionResult> NewsSearch(string Query)
+        {
+            string formattedQuery = _dal.BuildSearchQuery(Query);
+            ViewBag.Query = formattedQuery;
+            BingNewsRoot bnr = await _dal.SearchNewsStoriesAsync(formattedQuery);
+
+            return View(bnr);
+        }
+
         public IActionResult WikiSearch(string Wikiquery)
         {
             WikipediaSearchRoot wsr = WikipediaSearchDAL.SearchOnWikipedia(Wikiquery);
