@@ -10,13 +10,14 @@
 </form>
 
 
-<form action="NewsSearch">
+<form asp-action="NewsSearch">
     <label for="News">Seach News: </label>
     <select name="query">
         <option value="Business">Business</option>
         <option value="Politics">Politics</option>
         <option value="Sports">Sports</option>
-        <input class="btn-outline-primary" type="submit"  />
     </select>
+    <input type="text" name="Query" required/>
+    <input class="btn-outline-primary" type="submit" />
 </form>
 
