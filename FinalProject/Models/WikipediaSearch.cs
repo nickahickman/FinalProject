@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace FinalProject.Models
 {
 
-    public class SearchRoot
+    public class WikipediaSearchRoot
     {
         public string batchcomplete { get; set; }
         public Continue _continue { get; set; }
