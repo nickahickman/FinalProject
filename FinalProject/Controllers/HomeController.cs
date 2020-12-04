@@ -39,11 +39,15 @@ namespace FinalProject.Controllers
 
         public IActionResult WikiSearch(string Wikiquery)
         {
-            WikipediaSearchRoot wsr = WikipediaSearchDAL.SearchOnWikipedia(Wikiquery);
+            WikipediaSearchRoot wsr = WikipediaDAL.SearchOnWikipedia(Wikiquery);
             return View(wsr);
         }
 
-
+        public IActionResult WikiExtract(string title)
+        {
+            WikipediaExtractRoot wer = WikipediaDAL.ExtractWikiPageSummary(title);
+            return View(wer);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
