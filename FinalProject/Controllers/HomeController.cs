@@ -11,13 +11,7 @@ namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+       
         public IActionResult Index()
         {
             return View();
@@ -27,6 +21,14 @@ namespace FinalProject.Controllers
         {
             return View();
         }
+        
+        public IActionResult WikiSearch(string Wikiquery)
+        {
+            WikipediaSearchRoot wsr = WikipediaSearchDAL.SearchOnWikipedia(Wikiquery);
+            return View(wsr);
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
