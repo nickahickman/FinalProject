@@ -37,16 +37,17 @@ namespace FinalProject.Controllers
             return View(bnr);
         }
 
-        public IActionResult WikiSearch(string Wikiquery)
+        public IActionResult WikiSearch(string subwiki, string query)
         {
-            WikipediaSearchRoot wsr = WikipediaDAL.SearchOnWikipedia(Wikiquery);
+            WikipediaSearchRoot wsr = WikipediaDAL.SearchOnWiki(subwiki, query);
+            ViewBag.SubWiki = subwiki;
             return View(wsr);
         }
 
-        public IActionResult WikiExtract(string title)
+        public IActionResult WikiParse(string subwiki, string title)
         {
-            WikipediaExtractRoot wer = WikipediaDAL.ExtractWikiPageSummary(title);
-            return View(wer);
+            WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki,title);
+            return View(war);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
