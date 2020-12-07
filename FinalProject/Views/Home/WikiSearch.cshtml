@@ -1,10 +1,17 @@
-﻿@model WikipediaSearchRoot<p>@Model.query.searchinfo.totalhits results were found!</p>@foreach (Search item in Model.query.search)
+﻿@model WikipediaSearchRoot
+<h4>@Model.query.searchinfo.totalhits results were found!</h4>
+
+
+
+@foreach (Search item in Model.query.search)
 {
     <p>Title: @item.title</p>
-    <p>Page Id:@item.pageid</p>
-    <p>Size: @item.size</p>
+    <input hidden name="pageid" Page Id: @item.pageid />
+    <input hidden name="size" Size: @item.size />
     <p>Word Count:@item.wordcount</p>
-    <p>Info: @item.snippet</p>
     <p>Last Updated: @item.timestamp.ToShortDateString()</p>
+    <form asp-action="WikiParse" asp-route-subwiki="@ViewBag.SubWiki" asp-route-title="@item.title">
+        <input class="btn-outline-primary" type="submit" value="Readmore" />
+    </form>
     <hr />
 }

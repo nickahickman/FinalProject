@@ -16,4 +16,5 @@ namespace FinalProject.Models
         public int pageid { get; set; }
         public string wikitext { get; set; } // This is the target text that Nick's parsing method will take and "translate" into readable format.
     }
+
 }

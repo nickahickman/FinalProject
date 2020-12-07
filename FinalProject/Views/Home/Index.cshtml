@@ -4,20 +4,15 @@
 
 <h3>Search</h3>
 <form asp-action="WikiSearch">
-    <label for="Wikisearch">Seach Wikipedia: </label>
-    <input type="text" name="Wikiquery" required />
-    <input class="btn-outline-primary" type="submit"  />
-</form>
-
-
-<form asp-action="NewsSearch">
-    <label for="News">Seach News: </label>
-    <select name="query">
-        <option value="Business">Business</option>
-        <option value="Politics">Politics</option>
-        <option value="Sports">Sports</option>
-    </select>
-    <input type="text" name="Query" required/>
+    <p>Select Wikipedia or Sister Project</p>
+    <input type="radio" name="subwiki" value="wikipedia" checked /><p>Wikipedia</p>
+    <input type="radio" name="subwiki" value="wikibooks" /><p>Wikibooks</p>
+    <input type="radio" name="subwiki" value="wikinews"  /><p>Wikinews</p>
+    <input type="text" name="query" required />
     <input class="btn-outline-primary" type="submit" />
 </form>
+
+
+
+
 
