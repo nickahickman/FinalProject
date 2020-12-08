@@ -10,8 +10,24 @@
     <input hidden name="size" Size: @item.size />
     <p>Word Count:@item.wordcount</p>
     <p>Last Updated: @item.timestamp.ToShortDateString()</p>
-    <form asp-action="WikiParse" asp-route-subwiki="@ViewBag.SubWiki" asp-route-title="@item.title">
-        <input class="btn-outline-primary" type="submit" value="Readmore" />
-    </form>
+    @if (ViewBag.SubWiki.Equals("wikipedia"))
+    {
+        <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title="@item.title">
+            <input class="btn-outline-primary" type="submit" value="Read Wikipedia Article" />
+        </form>
+    }
+    else if (ViewBag.SubWiki.Equals("wikibooks"))
+    {
+        <form asp-action="WikiParse" asp-route-subwiki="wikibooks" asp-route-title="@item.title">
+            <input class="btn-outline-primary" type="submit" value="Read WikiBook" />
+        </form>
+    }
+    else if (ViewBag.SubWiki.Equals("wikinews"))
+    {
+        <form asp-action="WikiParse" asp-route-subwiki="wikinews" asp-route-title="@item.title">
+            <input class="btn-outline-primary" type="submit" value="Read Wikinews" />
+        </form>
+    }
+
     <hr />
 }
