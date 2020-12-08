@@ -28,10 +28,14 @@ namespace FinalProject.Controllers
             return View(wsr);
         }
 
-        public IActionResult WikiParse(string subwiki, string title)
+        public async Task<IActionResult> WikiParse(string subwiki, string title)
         {
-            WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki,title);
-            return View(war);
+            WikiTextParser wtp = new WikiTextParser();
+            WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
+            List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
+            ViewBag.Title = war.parse.title;
+
+            return View(paragraphs);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
