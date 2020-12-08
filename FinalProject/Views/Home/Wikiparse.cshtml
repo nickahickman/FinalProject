@@ -1,8 +1,16 @@
-﻿@model WikipediaParseRoot
+﻿@model List<string>
 
-<h4>@Model.parse.title</h4>
-<br />
-<p>@Model.parse.wikitext</p>
-
-
-
+<h4>@ViewBag.Title</h4>
+<hr />
+@foreach (String s in Model)
+{
+    if (s.StartsWith("Chapter:"))
+    {
+        <h4>@s</h4>
+        <hr />
+    }
+    else 
+    { 
+        <p>@s</p>
+    }
+}
