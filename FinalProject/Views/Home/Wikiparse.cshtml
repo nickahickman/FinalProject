@@ -9,8 +9,12 @@
         <h4>@s</h4>
         <hr />
     }
-    else 
+    else if (s.StartsWith("Section: "))
     { 
+        <h5>@s</h5>
+    }
+    else
+    {
         <p>@s</p>
     }
 }

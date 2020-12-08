@@ -10,9 +10,6 @@ namespace FinalProject.Models
 {
     public class WikiTextParser
     {
-        public List<string> Sections;
-        public List<string> Paragraphs;
-
         IConfiguration config;
         IBrowsingContext context;
 
@@ -22,9 +19,6 @@ namespace FinalProject.Models
         {
             config = Configuration.Default.WithDefaultLoader();
             context = BrowsingContext.New(config);
-
-            Sections = new List<string>();
-            Paragraphs = new List<string>();
         }
 
         public async Task<List<string>> GetParagraphs(string url)
@@ -33,18 +27,22 @@ namespace FinalProject.Models
             string[] blockedSections = { "Notes", "References", "External links" };
             string source = client.DownloadString(url);
             var HTML = await context.OpenAsync(req => req.Content(source));
-            var queriedElements = HTML.QuerySelectorAll(".mw-headline, #mw-content-text p").ToList();
+            var queriedElements = HTML.QuerySelectorAll("h2, h3, #mw-content-text p").ToList();
 
             elements.Add("Chapter: Introduction");
             queriedElements.ForEach(item => {
-                if (item.ClassName == "mw-headline")
+                if (item.LocalName == "h2" && item.Id != "mw-toc-heading")
                 {
                     if (!blockedSections.Contains(item.TextContent))
                     {
                         elements.Add($"Chapter: {item.TextContent}");
                     }
                 }
-                else
+                else if (item.LocalName == "h3")
+                {
+                    elements.Add($"Section: {item.TextContent}");
+                }
+                else if (item.LocalName == "p")
                 {
                     elements.Add(item.TextContent);
                 }
