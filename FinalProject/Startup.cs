@@ -29,6 +29,11 @@ namespace FinalProject
         public void ConfigureServices(IServiceCollection services)
         {
             
+            //services.AddDbContext<lrnrDBContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("AzureConnection")));
+
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("AzureConnection")));
