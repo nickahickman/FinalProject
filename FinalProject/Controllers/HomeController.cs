@@ -34,8 +34,18 @@ namespace FinalProject.Controllers
             WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
             List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
             ViewBag.Title = war.parse.title;
-
-            return View(paragraphs);
+            if (subwiki.Equals("wikibooks"))
+            {
+                return View("WikiParseBook", paragraphs);
+            } 
+            else if (subwiki.Equals("wikinews"))
+            {
+                return View("WikiParseNews", paragraphs);
+            }
+            else
+            {
+                return View(paragraphs);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
