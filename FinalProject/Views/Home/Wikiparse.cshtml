@@ -3,6 +3,14 @@
 <h4>@ViewBag.Title</h4>
 <hr />
 @foreach (String s in Model)
-{ 
-    <p>@s</p>
+{
+    if (s.StartsWith("Chapter:"))
+    {
+        <h4>@s</h4>
+        <hr />
+    }
+    else 
+    { 
+        <p>@s</p>
+    }
 }

@@ -29,12 +29,25 @@ namespace FinalProject.Models
 
         public async Task<List<string>> GetParagraphs(string url)
         {
+            List<string> elements = new List<string>();
             string source = client.DownloadString(url);
             var HTML = await context.OpenAsync(req => req.Content(source));
-            var paragraphs = HTML.GetElementsByTagName("p").ToList();
-            List<string> paragraphList = paragraphs.Select(item => item.TextContent).ToList();
+            var queriedElements = HTML.QuerySelectorAll(".mw-headline, #mw-content-text p").ToList();
 
-            return RemoveCitations(paragraphList);
+            elements.Add("Chapter: Introduction");
+            queriedElements.ForEach(item => {
+                if (item.ClassName == "mw-headline")
+                {
+                    elements.Add($"Chapter: {item.TextContent}");
+                }
+                else 
+                {
+                    elements.Add(item.TextContent);
+                }
+            
+            });
+
+            return RemoveCitations(elements);
         }
 
         public List<string> RemoveCitations(List<string> paragraphs)
