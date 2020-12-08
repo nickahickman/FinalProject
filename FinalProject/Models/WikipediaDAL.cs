@@ -7,13 +7,13 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace FinalProject.Models
-{
+{ 
     public class WikipediaDAL
     {
         public static string CallAPIToSearch(string subwiki, string query)
         {
             string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&list=search&srsearch={query}&format=json";
-
+            
             HttpWebRequest request = WebRequest.CreateHttp(endpoint);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 

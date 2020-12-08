@@ -27,7 +27,8 @@ namespace FinalProject.Models
             string[] blockedSections = { "Notes", "References", "External links" };
             string source = client.DownloadString(url);
             var HTML = await context.OpenAsync(req => req.Content(source));
-            var queriedElements = HTML.QuerySelectorAll("h2, h3, #mw-content-text p").ToList();
+            var queriedElements = HTML.QuerySelectorAll("#mw-content-text h2, #mw-content-text h3, #mw-content-text p").ToList();
+
 
             elements.Add("Chapter: Introduction");
             queriedElements.ForEach(item => {
@@ -46,10 +47,29 @@ namespace FinalProject.Models
                 {
                     elements.Add(item.TextContent);
                 }
-            
+
             });
 
             return RemoveCitations(elements);
+        }
+
+        public List<string> RemoveHeadlinesForMissingChapters(List<string> elements)
+        {
+            List<string> filtered = new List<string>();
+
+            for (int i = 0; i < elements.Count - 1; i++)
+            {
+                if (elements[i].StartsWith("Chapter:") || elements[i].StartsWith("Section:") && !elements[i + 1].StartsWith("Chapter:") && !elements[i + 1].StartsWith("Section:"))
+                {
+                    filtered.Add(elements[i]);
+                }
+                else if (!elements[i + 1].StartsWith("Chapter:") && !elements[i + 1].StartsWith("Section:"))
+                {
+                    filtered.Add(elements[i]);
+                }
+            }
+
+            return filtered;
         }
 
         public List<string> RemoveCitations(List<string> paragraphs)
@@ -66,5 +86,5 @@ namespace FinalProject.Models
         {
             return Regex.Replace(s, @"\[.*?\]", "");
         }
-    } 
+    }
 }
