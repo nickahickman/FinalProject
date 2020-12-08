@@ -1,8 +1,8 @@
-﻿@model WikipediaParseRoot
+﻿@model List<string>
 
-<h4>@Model.parse.title</h4>
-<br />
-<p>@Model.parse.wikitext</p>
-
-
-
+<h4>@ViewBag.Title</h4>
+<hr />
+@foreach (String s in Model)
+{ 
+    <p>@s</p>
+}
