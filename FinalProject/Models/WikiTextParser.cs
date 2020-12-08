@@ -30,6 +30,7 @@ namespace FinalProject.Models
         public async Task<List<string>> GetParagraphs(string url)
         {
             List<string> elements = new List<string>();
+            string[] blockedSections = { "Notes", "References", "External links" };
             string source = client.DownloadString(url);
             var HTML = await context.OpenAsync(req => req.Content(source));
             var queriedElements = HTML.QuerySelectorAll(".mw-headline, #mw-content-text p").ToList();
@@ -38,9 +39,12 @@ namespace FinalProject.Models
             queriedElements.ForEach(item => {
                 if (item.ClassName == "mw-headline")
                 {
-                    elements.Add($"Chapter: {item.TextContent}");
+                    if (!blockedSections.Contains(item.TextContent))
+                    {
+                        elements.Add($"Chapter: {item.TextContent}");
+                    }
                 }
-                else 
+                else
                 {
                     elements.Add(item.TextContent);
                 }
@@ -54,13 +58,13 @@ namespace FinalProject.Models
         {
             for (int i = 0; i < paragraphs.Count; i++)
             {
-                paragraphs[i] = RemoveCitations(paragraphs[i]);
+                paragraphs[i] = RemoveCitation(paragraphs[i]);
             }
 
             return paragraphs;
         }
 
-        public string RemoveCitations(string s)
+        public string RemoveCitation(string s)
         {
             return Regex.Replace(s, @"\[.*?\]", "");
         }
