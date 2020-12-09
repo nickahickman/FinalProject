@@ -9,7 +9,7 @@
 <div style="text-align: right;">
     <form asp-controller="Favorites" asp-action="AddFavorite" method="post">
         <input type="hidden" name="Title" value="@ViewBag.Title" />
-        <input type="hidden" name="SourceType" value="wikipedia" />
+        <input type="hidden" name="Source" value="wikipedia" />
         <input type="submit" value="&#10084;" />
     </form>
     <form asp-controller="Favorites" asp-action="DeleteFavorite" method="post">
