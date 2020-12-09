@@ -1,7 +1,22 @@
-﻿@model List<string>
+﻿@{
+    ViewData["Title"] = $"Wiki Article - {ViewBag.Title}";
+}
+
+@model List<string>
 
 <h4>@ViewBag.Title</h4>
 <hr />
+<div style="text-align: right;">
+    <form asp-controller="Favorites" asp-action="AddFavorite" method="post">
+        <input type="hidden" name="Title" value="@ViewBag.Title" />
+        <input type="hidden" name="SourceType" value="wikipedia" />
+        <input type="submit" value="&#10084;" />
+    </form>
+    <form asp-controller="Favorites" asp-action="DeleteFavorite" method="post">
+        <input type="hidden" name="Title" value="@ViewBag.Title" />
+        <input type="submit" value="&#128420;" />
+    </form>
+</div>
 @foreach (String s in Model)
 {
     if (s.StartsWith("Chapter:"))
@@ -10,7 +25,7 @@
         <hr />
     }
     else if (s.StartsWith("Section: "))
-    { 
+    {
         <h5>@s</h5>
     }
     else
