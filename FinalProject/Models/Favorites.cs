@@ -7,8 +7,9 @@ namespace FinalProject.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string SourceType { get; set; }
-        public int WordCount { get; set; }
+        public string Source { get; set; }
         public string UserId { get; set; }
+
+        public virtual AspNetUsers User { get; set; }
     }
 }
