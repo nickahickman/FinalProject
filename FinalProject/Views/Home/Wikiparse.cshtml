@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = $"Wiki Article - {ViewBag.Title}";
+    ViewData["Title"] = $"{ViewBag.Title}";
 }
 
 @model List<string>
@@ -10,10 +10,11 @@
     <form asp-controller="Favorites" asp-action="AddFavorite" method="post">
         <input type="hidden" name="Title" value="@ViewBag.Title" />
         <input type="hidden" name="Source" value="wikipedia" />
+        <input type="hidden" name="PageId" value="@ViewBag.PageId" />
         <input type="submit" value="&#10084;" />
     </form>
-    <form asp-controller="Favorites" asp-action="DeleteFavorite" method="post">
-        <input type="hidden" name="Title" value="@ViewBag.Title" />
+    <form asp-controller="Favorites" asp-action="DeleteFavorite">
+        <input type="hidden" name="pageId" value="@ViewBag.PageId" />
         <input type="submit" value="&#128420;" />
     </form>
 </div>

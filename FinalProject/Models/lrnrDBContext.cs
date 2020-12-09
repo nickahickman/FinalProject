@@ -9,7 +9,6 @@ namespace FinalProject.Models
     {
         public IConfiguration Configuration { get; }
 
-
         public lrnrDBContext()
         {
         }
