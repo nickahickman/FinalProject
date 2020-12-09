@@ -9,6 +9,7 @@ namespace FinalProject.Models
         public string Title { get; set; }
         public string Source { get; set; }
         public string UserId { get; set; }
+        public int? PageId { get; set; }
 
         public virtual AspNetUsers User { get; set; }
     }
