@@ -24,33 +24,43 @@ namespace FinalProject.Models
         public async Task<List<string>> GetParagraphs(string url)
         {
             List<string> elements = new List<string>();
-            string[] blockedSections = { "Notes", "References", "External links" };
             string source = client.DownloadString(url);
+            string[] extraneousSections = { "External links", "External links[edit]", "See Also", "References", "Notes" };
             var HTML = await context.OpenAsync(req => req.Content(source));
             var queriedElements = HTML.QuerySelectorAll("#mw-content-text h2, #mw-content-text h3, #mw-content-text p").ToList();
 
-
             elements.Add("Chapter: Introduction");
-            queriedElements.ForEach(item => {
-                if (item.LocalName == "h2" && item.Id != "mw-toc-heading")
+
+            for (int i = 0; i < queriedElements.Count - 1; i++)
+            {
+                var item = queriedElements[i];
+
+                if (item.LocalName == "h2" && i < queriedElements.Count - 1 && item.Id != "mw-toc-heading")
                 {
-                    if (!blockedSections.Contains(item.TextContent))
+                    if (!extraneousSections.Contains(item.TextContent))
                     {
-                        elements.Add($"Chapter: {item.TextContent}");
+                        if (queriedElements[i + 1].LocalName == "p" || queriedElements[i + 1].LocalName == "h3")
+                        {
+                            elements.Add($"Chapter: {item.TextContent}");
+                        }
                     }
                 }
-                else if (item.LocalName == "h3")
+                else if (item.LocalName == "h3" && i < queriedElements.Count - 1)
                 {
-                    elements.Add($"Section: {item.TextContent}");
+                    if (queriedElements[i + 1].LocalName == "p")
+                    {
+                        elements.Add($"Section: {item.TextContent}");
+                    }
                 }
-                else if (item.LocalName == "p")
+                else if (item.LocalName == "p" && item.ClassName != "mw-empty-elt")
                 {
                     elements.Add(item.TextContent);
                 }
+            }
 
-            });
+            RemoveCitations(elements);
 
-            return RemoveCitations(elements);
+            return elements;
         }
 
         public List<string> RemoveHeadlinesForMissingChapters(List<string> elements)
