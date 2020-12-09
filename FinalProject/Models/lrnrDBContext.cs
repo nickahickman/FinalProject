@@ -8,9 +8,10 @@ namespace FinalProject.Models
     public partial class lrnrDBContext : DbContext
     {
         public IConfiguration Configuration { get; }
+
+
         public lrnrDBContext()
         {
-
         }
 
         public lrnrDBContext(DbContextOptions<lrnrDBContext> options)
@@ -137,21 +138,25 @@ namespace FinalProject.Models
 
             modelBuilder.Entity<Favorites>(entity =>
             {
-                entity.HasNoKey();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.SourceType)
+                entity.Property(e => e.Source)
                     .IsRequired()
                     .HasMaxLength(25);
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasMaxLength(300);
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(450);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Favorites)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Favorites__UserI__06CD04F7");
             });
 
             OnModelCreatingPartial(modelBuilder);

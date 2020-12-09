@@ -26,12 +26,12 @@ namespace FinalProject.Controllers
             return View(f);
         }
         [HttpPost]
-        public IActionResult AddFavorite(string Title, string SourceType)
+        public IActionResult AddFavorite(string Title, string Source)
         {
             Favorites F = new Favorites();
+
             F.Title = Title;
-            F.SourceType = SourceType;
-            F.WordCount = -1;
+            F.Source = Source;
             F.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (ModelState.IsValid)
@@ -47,7 +47,7 @@ namespace FinalProject.Controllers
         {
             string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<Favorites> favorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
-            return View();
+            return View(favorites);
         }
 
         public IActionResult DeleteFavorite(int Id)

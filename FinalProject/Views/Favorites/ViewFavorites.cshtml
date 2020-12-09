@@ -8,8 +8,8 @@
 @foreach (Favorites f in Model)
 {
     <p>@f.Title</p>
-    <p>@f.SourceType</p>
-    <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.SourceType" asp-route-title="@f.Title">
+    <p>@f.Source</p>
+    <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
         <input class="btn-outline-primary" type="submit" value="Shortcut to Article" />
     </form>
     <form asp-controller="Favorites" asp-action="DeleteFavorite">
