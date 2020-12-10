@@ -12,9 +12,18 @@ namespace FinalProject.Controllers
     public class HomeController : Controller
     {
 
-        public IActionResult Index()
+        private readonly TrendingTopicsDAL _dal;
+
+        public HomeController(TrendingTopicsDAL dal)
         {
-            return View();
+            _dal = dal;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            List<string> topics = await _dal.GetTrendingTopicsAsync();
+
+            return View(topics);
         }
 
         public IActionResult Privacy()

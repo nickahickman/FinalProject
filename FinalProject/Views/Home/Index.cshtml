@@ -1,11 +1,20 @@
-﻿<h1>Welcome to LRNR!</h1>
+﻿@model List<string>
 
+<h1>Welcome to LRNR!</h1>
 <h3>Search</h3>
 <form asp-action="WikiSearch">
     <p>Select Wikipedia or Sister Project</p>
     <input type="radio" name="subwiki" value="wikipedia" checked /><label for="wikipedia"> Wikipedia</label><br />
     <input type="radio" name="subwiki" value="wikibooks" /><label for="wikipedia"> Wikibooks</label><br />
-    <input type="radio" name="subwiki" value="wikinews"  /><label for="wikipedia"> Wikinews</label><br />
+    <input type="radio" name="subwiki" value="wikinews" /><label for="wikipedia"> Wikinews</label><br />
     <input type="text" name="query" required />
     <input class="btn-outline-primary" type="submit" />
 </form>
+
+<h3>Trending Topics</h3>
+<ul id="trendingList">
+    @foreach (String s in Model)
+    {
+        <li><form asp-action="WikiSearch" asp-route-subwiki="wikipedia" asp-route-query=@s><input type="submit" value="@s" /></form></li>
+    }
+</ul>
