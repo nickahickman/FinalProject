@@ -63,25 +63,6 @@ namespace FinalProject.Models
             return elements;
         }
 
-        public List<string> RemoveHeadlinesForMissingChapters(List<string> elements)
-        {
-            List<string> filtered = new List<string>();
-
-            for (int i = 0; i < elements.Count - 1; i++)
-            {
-                if (elements[i].StartsWith("Chapter:") || elements[i].StartsWith("Section:") && !elements[i + 1].StartsWith("Chapter:") && !elements[i + 1].StartsWith("Section:"))
-                {
-                    filtered.Add(elements[i]);
-                }
-                else if (!elements[i + 1].StartsWith("Chapter:") && !elements[i + 1].StartsWith("Section:"))
-                {
-                    filtered.Add(elements[i]);
-                }
-            }
-
-            return filtered;
-        }
-
         public List<string> RemoveCitations(List<string> paragraphs)
         {
             for (int i = 0; i < paragraphs.Count; i++)

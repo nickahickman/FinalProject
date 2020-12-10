@@ -18,19 +18,25 @@
         <input type="submit" value="&#128420;" />
     </form>
 </div>
-@foreach (String s in Model)
-{
-    if (s.StartsWith("Chapter:"))
+<div id="AudioControls">
+    <button id=play class="btn btn-outline-dark">Play</button> &nbsp;
+    <button id=pause class="btn btn-outline-dark">Pause</button> &nbsp;
+</div>
+<div id="wiki">
+    @foreach (String s in Model)
     {
-        <h4>@s</h4>
-        <hr />
+        if (s.StartsWith("Chapter:"))
+        {
+            <h4>@s</h4>
+            <hr />
+        }
+        else if (s.StartsWith("Section: "))
+        {
+            <h5>@s</h5>
+        }
+        else
+        {
+            <p class="text-justify">@s</p>
+        }
     }
-    else if (s.StartsWith("Section: "))
-    {
-        <h5>@s</h5>
-    }
-    else
-    {
-        <p>@s</p>
-    }
-}
+</article>
