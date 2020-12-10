@@ -9,8 +9,8 @@ namespace FinalProject.Models
     public class CategoryMembersRoot
     {
         public string batchcomplete { get; set; }
-        public Continue _continue { get; set; }
-        public Query query { get; set; }
+        public CatMemContinue _continue { get; set; }
+        public CatMemQuery query { get; set; }
     }
 
     public class CatMemContinue

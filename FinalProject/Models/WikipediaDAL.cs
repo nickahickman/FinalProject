@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +47,53 @@ namespace FinalProject.Models
             string data = CallAPIToParse(subwiki, title);
             WikipediaParseRoot war = JsonConvert.DeserializeObject<WikipediaParseRoot>(data);
             return war;
+        }
+
+        public static string CallAPIToGetCategories(string subwiki, string title)
+        {
+            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&prop=categories&titles={title}";
+
+            HttpWebRequest request = WebRequest.CreateHttp(endpoint);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string output = rd.ReadToEnd();
+            return output;
+        }
+
+        public static CategoriesRoot GetCategories(string subwiki, string title)
+        {
+            string data = CallAPIToGetCategories(subwiki, title);
+            CategoriesRoot cr = JsonConvert.DeserializeObject<CategoriesRoot>(data);
+
+            JToken t = JToken.Parse(data);
+            string conId = t["continue"]["clcontinue"].ToString();
+            string[] con = conId.Split('|');
+            string id = con[0];
+            string pageString = t["query"]["pages"][id].ToString();
+            CatPage c = JsonConvert.DeserializeObject<CatPage>(pageString);
+            cr.query.pages.page = c;
+
+            return cr;
+        }
+
+        public static string CallAPIToGetCategoryMembers(string subwiki, string category)
+        {
+            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle={category}&cmlimit=100";
+
+            HttpWebRequest request = WebRequest.CreateHttp(endpoint);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string output = rd.ReadToEnd();
+            return output;
+        }
+
+        public static CategoryMembersRoot GetCategoryMembers(string subwiki, string title)
+        {
+            string data = CallAPIToGetCategoryMembers(subwiki, title);
+            CategoryMembersRoot cmr = JsonConvert.DeserializeObject<CategoryMembersRoot>(data);
+            return cmr;
         }
     }
 }
