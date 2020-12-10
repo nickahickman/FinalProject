@@ -79,7 +79,7 @@ namespace FinalProject.Models
 
         public static string CallAPIToGetCategoryMembers(string subwiki, string category)
         {
-            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle={category}&cmlimit=100";
+            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle={category}&cmlimit=5";
 
             HttpWebRequest request = WebRequest.CreateHttp(endpoint);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();

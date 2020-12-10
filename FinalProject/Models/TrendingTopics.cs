@@ -11,5 +11,4 @@ namespace FinalProject.Models
         [JsonPropertyName("hot topics")]
         public string[] hottopics { get; set; }
     }
-
 }
