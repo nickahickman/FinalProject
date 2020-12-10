@@ -47,5 +47,43 @@ namespace FinalProject.Models
             WikipediaParseRoot war = JsonConvert.DeserializeObject<WikipediaParseRoot>(data);
             return war;
         }
+
+        public static string CallAPIToGetCategories(string subwiki, string title)
+        {
+            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&prop=categories&titles={title}";
+
+            HttpWebRequest request = WebRequest.CreateHttp(endpoint);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string output = rd.ReadToEnd();
+            return output;
+        }
+
+        public static CategoriesRoot GetCategories(string subwiki, string title)
+        {
+            string data = CallAPIToGetCategories(subwiki, title);
+            CategoriesRoot cr = JsonConvert.DeserializeObject<CategoriesRoot>(data);
+            return cr;
+        }
+
+        public static string CallAPIToGetCategoryMembers(string subwiki, string category)
+        {
+            string endpoint = $"https://en.{subwiki}.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle={category}&cmlimit=10";
+
+            HttpWebRequest request = WebRequest.CreateHttp(endpoint);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string output = rd.ReadToEnd();
+            return output;
+        }
+
+        public static CategoryMembersRoot GetCategoryMembers(string subwiki, string title)
+        {
+            string data = CallAPIToGetCategories(subwiki, title);
+            CategoryMembersRoot cmr = JsonConvert.DeserializeObject<CategoryMembersRoot>(data);
+            return cmr;
+        }
     }
 }
