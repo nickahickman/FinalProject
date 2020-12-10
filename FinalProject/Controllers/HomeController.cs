@@ -53,17 +53,25 @@ namespace FinalProject.Controllers
         public IActionResult RelatedArticles(string subwiki, string title)
         {
             CategoriesRoot cr = WikipediaDAL.GetCategories(subwiki, title);
-            List<Category> catList = cr.query.pages.page.categories.ToList(); // PageID goofyness here
+            Category[] catArray = cr.query.pages.page.categories; // PageID goofyness here
 
             List<Categorymember[]> catMemArrList = new List<Categorymember[]>();
-            foreach (Category c in catList)
+            foreach (Category c in catArray)
             {
                 string catTitle = c.title;
-                CategoryMembersRoot cmr = WikipediaDAL.GetCategoryMembers(subwiki, c.title);
-                catMemArrList.Add(cmr.query.categorymembers);
+                if (catTitle.Contains("Articles"))
+                {
+                    continue;
+                }
+                else
+                {
+                    CategoryMembersRoot cmr = WikipediaDAL.GetCategoryMembers(subwiki, catTitle);
+                    Categorymember[] cm = cmr.query.categorymembers;
+                    catMemArrList.Add(cm);
+                }
             }
 
-            return View("Index",catMemArrList);
+            return View(catMemArrList);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
