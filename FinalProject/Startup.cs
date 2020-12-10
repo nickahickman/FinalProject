@@ -28,6 +28,10 @@ namespace FinalProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<TrendingTopicsDAL>(client =>
+            {
+                client.BaseAddress = new Uri("https://hot-topics-urls-search-trends-and-others-for-the-day.p.rapidapi.com/");
+            });
             services.AddDbContext<lrnrDBContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("AzureConnection")));
