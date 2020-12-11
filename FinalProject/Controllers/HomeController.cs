@@ -11,19 +11,53 @@ namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
-
+        private readonly lrnrDBContext _context;
         private readonly TrendingTopicsDAL _dal;
 
-        public HomeController(TrendingTopicsDAL dal)
+        public HomeController(lrnrDBContext context, TrendingTopicsDAL dal)
         {
+            _context = context;
             _dal = dal;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            int highestID = _context.TrendingKeywords.Select(x => x.Id).Max();
+            TrendingKeywords tK = _context.TrendingKeywords.Find(highestID);
+            List<string> keyword = tK.Keyword.Split("|").ToList();
+
+            DateTime Now = DateTime.Now;
+            DateTime tkDate = (DateTime)tK.DatePulled;
+
+            TimeSpan diff = Now - tkDate;
+            double hours = diff.TotalHours;
+            
+
+            if(hours > 1)
+            {                
+                return RedirectToAction("GetTrendingKeywords");
+            }
+            else
+            {
+                return View(keyword);
+            }
+
+        }
+        public async Task<IActionResult> GetTrendingKeywords()
         {
             List<string> topics = await _dal.GetTrendingTopicsAsync();
+            string keywords = String.Join("|", topics);
+            TrendingKeywords tk = new TrendingKeywords();
 
-            return View(topics);
+            tk.Keyword = keywords;
+
+            if (ModelState.IsValid)
+            {
+                _context.TrendingKeywords.Add(tk);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()
