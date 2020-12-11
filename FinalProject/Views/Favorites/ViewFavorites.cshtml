@@ -12,9 +12,10 @@
 else
 {
     <form asp-controller="Favorites" asp-action="ViewFavorites" method="post">
-        <input type="text" name="sortTag" />
+        <input type="text" name="sortTag" required />
         <input class="btn-outline-primary" type="submit" value="Sort By Tag" />
     </form>
+    <hr />
     @foreach (Favorites f in Model)
     {
         <p>Title: @f.Title</p>
@@ -41,7 +42,7 @@ else
             }
             <p>Tags: @tags</p>
         }
-        <div style="float: left">
+        <div>
             <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
                 <input class="btn-outline-primary" type="submit" value="&#8618;" />
             </form>

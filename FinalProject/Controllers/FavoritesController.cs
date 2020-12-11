@@ -71,17 +71,17 @@ namespace FinalProject.Controllers
             string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<Favorites> favorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
 
-            string targetTag = "|" + sortTag + "|";
+            List<Favorites> sortedFavs = new List<Favorites>(favorites);
             foreach(Favorites f in favorites)
             {
-                if (f.Tags.Contains(targetTag))
+                if (f.Tags.Contains(sortTag))
                 {
-                    favorites.Remove(f);
-                    favorites.Insert(0, f);
+                    sortedFavs.Remove(f);
+                    sortedFavs.Insert(0, f);
                 }
             }
 
-            return View(favorites);
+            return View(sortedFavs);
         }
 
         // UPDATE
@@ -94,7 +94,14 @@ namespace FinalProject.Controllers
         public IActionResult ApplyTagChanges(int Id, string Tags)
         {
             Favorites F = _context.Favorites.Find(Id);
-            F.Tags = Tags.Trim();
+            if (Tags == null)
+            {
+                F.Tags = "";
+            }
+            else
+            {
+                F.Tags = Tags.Trim();
+            }
             _context.Favorites.Update(F);
             _context.SaveChanges();
             return RedirectToAction("ViewFavorites");
