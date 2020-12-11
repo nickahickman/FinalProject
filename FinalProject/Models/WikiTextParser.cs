@@ -58,19 +58,47 @@ namespace FinalProject.Models
                 }
             }
 
-            RemoveCitations(elements);
+            RemovePhoeneticsAndCitations(elements);
 
             return elements;
         }
 
-        public List<string> RemoveCitations(List<string> paragraphs)
+        public async Task<List<string>> GetArticleLinks(string url, string title)
+        {
+            List<string> links = new List<string>();
+            string[] extraneousLinks = { "left", "right", "sic", "a", "b" };
+            string source = client.DownloadString(url);
+            var HTML = await context.OpenAsync(req => req.Content(source));
+            var queriedElements = HTML.QuerySelectorAll("#mw-content-text i a").ToList();
+
+            foreach (AngleSharp.Dom.IElement item in queriedElements)
+            {
+                if (!extraneousLinks.Contains(item.TextContent) && item.TextContent.Length > 1 && item.TextContent != title)
+                {
+                    if (!links.Contains(item.TextContent))
+                    {
+                        links.Add(item.TextContent);
+                    }
+                }
+            }
+
+            return links;
+        }
+
+        public List<string> RemovePhoeneticsAndCitations(List<string> paragraphs)
         {
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 paragraphs[i] = RemoveCitation(paragraphs[i]);
+                paragraphs[i] = RemovePhoenetics(paragraphs[i]);
             }
 
             return paragraphs;
+        }
+
+        public string RemovePhoenetics(string s)
+        {
+            return Regex.Replace(s, @"\(/.*?\)", "");
         }
 
         public string RemoveCitation(string s)
