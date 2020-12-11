@@ -7,11 +7,11 @@ namespace FinalProject.Models
 {
     public partial class lrnrDBContext : DbContext
     {
-        public IConfiguration Configuration { get; }
-
         public lrnrDBContext()
         {
         }
+
+        public IConfiguration Configuration { get; }
 
         public lrnrDBContext(DbContextOptions<lrnrDBContext> options)
             : base(options)
@@ -25,13 +25,17 @@ namespace FinalProject.Models
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Audiofiles> Audiofiles { get; set; }
         public virtual DbSet<Favorites> Favorites { get; set; }
+        public virtual DbSet<TrendingKeywords> TrendingKeywords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
+
             }
         }
 
@@ -135,13 +139,24 @@ namespace FinalProject.Models
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
+            modelBuilder.Entity<Audiofiles>(entity =>
+            {
+                entity.Property(e => e.StorageAddress).HasMaxLength(300);
+            });
+
             modelBuilder.Entity<Favorites>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.HasFinished).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.HasStarted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Source)
                     .IsRequired()
                     .HasMaxLength(25);
+
+                entity.Property(e => e.Tags).HasMaxLength(100);
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -156,6 +171,17 @@ namespace FinalProject.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Favorites__UserI__06CD04F7");
+            });
+
+            modelBuilder.Entity<TrendingKeywords>(entity =>
+            {
+                entity.Property(e => e.DatePulled)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Keyword)
+                    .IsRequired()
+                    .HasMaxLength(700);
             });
 
             OnModelCreatingPartial(modelBuilder);
