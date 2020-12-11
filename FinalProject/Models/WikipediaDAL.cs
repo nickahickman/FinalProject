@@ -41,7 +41,6 @@ namespace FinalProject.Models
             string output = rd.ReadToEnd();
             return output;
         }
-
         public static WikipediaParseRoot ParseWikitext(string subwiki, string title)
         {
             string data = CallAPIToParse(subwiki, title);

@@ -50,7 +50,7 @@ namespace FinalProject.Controllers
             List<Favorites> favorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
             return View(favorites);
         }
-
+       
         public IActionResult DeleteFavorite(int pageId)
         {
             string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;

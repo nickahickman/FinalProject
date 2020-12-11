@@ -17,7 +17,7 @@ namespace FinalProject.Models
             _client = client;
             _client.DefaultRequestHeaders.Add("x-rapidapi-key", Secret.rapidAPIKey);
         }
-
+        
         public async Task<List<string>> GetTrendingTopicsAsync()
         {
             var response = await _client.GetAsync("hotTopicsofToday");
