@@ -25,24 +25,38 @@ namespace FinalProject.Controllers
             var f = _context.Favorites.Where(x => x.UserId == id).ToList(); // Matching Currently Logged in User to Database Entries.
             return View(f);
         }
+
+        // CREATE
         [HttpPost]
         public IActionResult AddFavorite(string Title, string Source, int PageId)
         {
-            Favorites F = new Favorites();
+            // Check if the Favorite already exists
+            string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Favorites> userFavorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
+            List<Favorites> checkTarget = userFavorites.Where(x => x.PageId == PageId).ToList();
 
-            F.Title = Title;
-            F.Source = Source;
-            F.PageId = PageId;
-            F.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            if (ModelState.IsValid)
+            // If it doesn't already exist, create a new one.
+            if (checkTarget.Count == 0)
             {
-                _context.Favorites.Add(F);
-                _context.SaveChanges();
+                Favorites F = new Favorites();
+
+                F.Title = Title;
+                F.Source = Source;
+                F.PageId = PageId;
+                F.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                F.Tags = "";
+
+                if (ModelState.IsValid)
+                {
+                    _context.Favorites.Add(F);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction("ViewFavorites");
         }
+
+        // READ
         [HttpGet]
         public IActionResult ViewFavorites()
         {
@@ -51,6 +65,42 @@ namespace FinalProject.Controllers
             return View(favorites);
         }
 
+        [HttpPost]
+        public IActionResult ViewFavorites(string sortTag)
+        {
+            string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Favorites> favorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
+
+            string targetTag = "|" + sortTag + "|";
+            foreach(Favorites f in favorites)
+            {
+                if (f.Tags.Contains(targetTag))
+                {
+                    favorites.Remove(f);
+                    favorites.Insert(0, f);
+                }
+            }
+
+            return View(favorites);
+        }
+
+        // UPDATE
+        public IActionResult UpdateFavorite(int Id)
+        {
+            Favorites F = _context.Favorites.Find(Id);
+            return View(F);
+        }
+
+        public IActionResult ApplyTagChanges(int Id, string Tags)
+        {
+            Favorites F = _context.Favorites.Find(Id);
+            F.Tags = Tags.Trim();
+            _context.Favorites.Update(F);
+            _context.SaveChanges();
+            return RedirectToAction("ViewFavorites");
+        }
+
+        // DELETE
         public IActionResult DeleteFavorite(int pageId)
         {
             string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
