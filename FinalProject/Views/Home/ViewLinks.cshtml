@@ -1,0 +1,11 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<string>
+
+<ul id="trendingList">
+    @foreach (String s in Model)
+    {
+        <li><form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title=@s><input type="submit" value="@s" /></form></li>
+    }
+</ul>

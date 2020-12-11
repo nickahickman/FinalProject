@@ -59,6 +59,29 @@ namespace FinalProject.Controllers
             }
         }
 
+        public async Task<IActionResult> BuildAudioFile(string subwiki, string title)
+        {
+            WikiTextParser wtp = new WikiTextParser();
+            WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
+            List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
+            await TextToSpeech.SynthesizeAudioAsync(String.Join("", paragraphs));
+            ViewBag.Title = war.parse.title;
+            ViewBag.PageId = war.parse.pageid;
+
+            return View();
+        }
+
+        public async Task<IActionResult> ViewLinks(string subwiki, string title)
+        {
+            WikiTextParser wtp = new WikiTextParser();
+            WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
+            List<string> links = await wtp.GetArticleLinks($"https://en.wikipedia.org/?curid={war.parse.pageid}", title);
+            ViewBag.Title = war.parse.title;
+            ViewBag.PageId = war.parse.pageid;
+
+            return View(links);
+        }
+
         public IActionResult RelatedArticles(string subwiki, string title)
         {
             CategoriesRoot cr = WikipediaDAL.GetCategories(subwiki, title);
