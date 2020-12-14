@@ -2,19 +2,27 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CognitiveServices.Speech;
-using Microsoft.CognitiveServices.Speech.Audio;
+using Amazon.Polly;
+using Amazon.Polly.Model;
+using Amazon.Runtime;
 
 namespace FinalProject.Models
 {
     public class TextToSpeech
     {
-        public static async Task SynthesizeAudioAsync(string article)
+        public static async Task<string> SynthesizeAudioAsync(string article, string title)
         {
-            var config = SpeechConfig.FromSubscription(Secret.azureSpeechKey, "eastus");
-            using var audioConfig = AudioConfig.FromWavFileOutput("../../file.wav");
-            using var synthesizer = new SpeechSynthesizer(config, audioConfig);
-            await synthesizer.SpeakTextAsync(article);
+            AmazonPollyClient apc = new AmazonPollyClient(Secret.AWSAccessKey, Secret.AWSSecretKey, Amazon.RegionEndpoint.USEast1);
+            StartSpeechSynthesisTaskRequest req = new StartSpeechSynthesisTaskRequest();
+            req.Engine = "neural";
+            req.OutputFormat = "mp3";
+            req.OutputS3BucketName = "lrnr";
+            req.Text = article;
+            req.VoiceId = "Matthew";
+
+            StartSpeechSynthesisTaskResponse response = await apc.StartSpeechSynthesisTaskAsync(req);
+
+            return response.SynthesisTask.OutputUri;
         }
     }
 }

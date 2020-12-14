@@ -14,10 +14,7 @@
         <input type="submit" value="&#10084;" />
     </form>
 </div>
-<div id="AudioControls">
-    <button id=play class="btn btn-outline-dark">Play</button> &nbsp;
-    <button id=pause class="btn btn-outline-dark">Pause</button> &nbsp;
-</div>
+<form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>
 <div id="wiki">
     @foreach (String s in Model)
     {

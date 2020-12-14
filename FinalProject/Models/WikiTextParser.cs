@@ -35,7 +35,7 @@ namespace FinalProject.Models
             {
                 var item = queriedElements[i];
 
-                if (item.LocalName == "h2" && i < queriedElements.Count - 1 && item.Id != "mw-toc-heading")
+                if (item.LocalName == "h2" && i <= queriedElements.Count - 1 && item.Id != "mw-toc-heading")
                 {
                     if (!extraneousSections.Contains(item.TextContent))
                     {
@@ -62,6 +62,24 @@ namespace FinalProject.Models
 
             return elements;
         }
+
+        public Dictionary<string, string> BuildArticle(List<string> article)
+        {
+            Dictionary<string, string> chapters = new Dictionary<string, string>();
+
+
+
+            return chapters;
+        }
+
+        //public List<string> RemoveEmptyChapters(List<string> elements)
+        //{
+        //    int i = 
+        //    for (int i = elements.Count - 1; i > 0; i--)
+        //    { 
+        //        if 
+        //    }
+        //}
 
         public async Task<List<string>> GetArticleLinks(string url, string title)
         {
