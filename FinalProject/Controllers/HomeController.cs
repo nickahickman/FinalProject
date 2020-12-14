@@ -11,15 +11,23 @@ namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
-
+        private readonly lrnrDBContext _context;
         private readonly TrendingTopicsDAL _dal;
 
-        public HomeController(TrendingTopicsDAL dal)
+        public HomeController(lrnrDBContext context, TrendingTopicsDAL dal)
         {
+            _context = context;
             _dal = dal;
         }
 
         public async Task<IActionResult> Index()
+        {
+            List<string> topics = await _dal.GetTrendingTopicsAsync();
+
+            return View(topics);
+        }
+
+        public async Task<IActionResult> FetchKeywords()
         {
             List<string> topics = await _dal.GetTrendingTopicsAsync();
 
@@ -64,12 +72,31 @@ namespace FinalProject.Controllers
             WikiTextParser wtp = new WikiTextParser();
             WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
             List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
-            await TextToSpeech.SynthesizeAudioAsync(String.Join("", paragraphs));
+            string fileURL = await TextToSpeech.SynthesizeAudioAsync(String.Join(",", paragraphs), title);
             ViewBag.Title = war.parse.title;
             ViewBag.PageId = war.parse.pageid;
+            ViewBag.FileURL = fileURL;
 
+            //Audiofiles af = new Audiofiles();
+            //af.SectionNumber = 1;
+            //af.PageId = war.parse.pageid;
+            //af.StorageAddress = fileURL;
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Audiofiles.Add(af);
+            //    _context.SaveChanges();
+            //}
+
+            return RedirectToAction("ListenToArticle", "Home", new { fileURL });
+        }
+
+        public IActionResult ListenToArticle(string fileURL)
+        {
+            ViewBag.FileURL = fileURL;
             return View();
         }
+
 
         public async Task<IActionResult> ViewLinks(string subwiki, string title)
         {
