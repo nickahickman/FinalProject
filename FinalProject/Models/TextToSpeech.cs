@@ -12,9 +12,8 @@ namespace FinalProject.Models
     {
         public static async Task<string> SynthesizeAudioAsync(string article, string title)
         {
-            AmazonPollyClient apc = new AmazonPollyClient(Secret.AWSAccessKey, Secret.AWSSecretKey, Amazon.RegionEndpoint.USEast1);
+            AmazonPollyClient apc = new AmazonPollyClient(Secret.AWSAccessKey, Secret.AWSSecretKey, Amazon.RegionEndpoint.USEast2);
             StartSpeechSynthesisTaskRequest req = new StartSpeechSynthesisTaskRequest();
-            req.Engine = "neural";
             req.OutputFormat = "mp3";
             req.OutputS3BucketName = "lrnr";
             req.Text = article;
@@ -24,5 +23,7 @@ namespace FinalProject.Models
 
             return response.SynthesisTask.OutputUri;
         }
+
+
     }
 }
