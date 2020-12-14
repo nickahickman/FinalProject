@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Modify Favorite Tags";
+}
+@model Favorites
+
+<h1>Update Favorite Tags</h1>
+<hr />
+<h6>You are about to modify the current Favorite's Tags:</h6>
+
+<p style="margin-left: 2em">Title: @Model.Title</p>
+<p style="margin-left: 2em">Source: @Model.Source</p>
+<p style="margin-left: 2em">Page ID: @Model.PageId</p>
+<p style="margin-left: 2em">Started: @Model.HasStarted</p>
+<p style="margin-left: 2em">Finished: @Model.HasFinished</p>
+
+<h6>Please enter the tags that you would like to assign to this Favorite.</h6>
+<p>Use the "|" key to separate the tags. Any text between these symbols will count as a singular tag. </p>
+<p>Deleting all text will have it so that this Favorite has no tags. Limit at 100 characters.</p>
+
+<form asp-controller="Favorites" asp-action="ApplyTagChanges" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="text" name="Tags" value="@Model.Tags" maxlength="100" size="100"/>
+    <input type="submit" value="Apply Changes" />
+</form>

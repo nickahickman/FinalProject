@@ -5,15 +5,55 @@
 
 <h1>Favorites</h1>
 <hr />
-@foreach (Favorites f in Model)
+@if (Model.Count == 0)
 {
-    <p>Title: @f.Title</p>
-    <p>Source: @f.Source</p>
-    <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
-        <input class="btn-outline-primary" type="submit" value="&#8618;" />
+    <h4>Looks like you don't have any articles saved into your Personal Playlist! You should go and favorite some by clicking the &#10084; button!</h4>
+}
+else
+{
+    <form asp-controller="Favorites" asp-action="ViewFavorites" method="post">
+        <input type="text" name="sortTag" required />
+        <input class="btn-outline-primary" type="submit" value="Sort By Tag" />
     </form>
-    <form asp-controller="Favorites" asp-action="DeleteFavorite">
-        <input type="hidden" name="pageId" value="@f.PageId" />
-        <input type="submit" value="&#128420;" />
-    </form>
+    <hr />
+    @foreach (Favorites f in Model)
+    {
+        <p>Title: @f.Title</p>
+        <p>Source: @f.Source</p>
+        <p>Page ID: @f.PageId</p>
+        <p>Started: @f.HasStarted</p>
+        <p>Finished: @f.HasFinished</p>
+
+        @if (f.Tags.Length == 0)
+        {
+            <p>Tags: (none)</p>
+        }
+        else
+        {
+            string tags = "";
+            List<string> tagList = f.Tags.Split("|").ToList();
+            foreach (string tag in tagList)
+            {
+                if (tag.Trim().Length > 0)
+                {
+                    tags += tag.Trim();
+                    tags += ", ";
+                }
+            }
+            <p>Tags: @tags</p>
+        }
+        <div>
+            <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
+                <input class="btn-outline-primary" type="submit" value="&#8618;" />
+            </form>
+            <form asp-controller="Favorites" asp-action="UpdateFavorite" asp-route-Id="@f.Id">
+                <input class="btn-outline-primary" type="submit" value="&#128278;" />
+            </form>
+            <form asp-controller="Favorites" asp-action="DeleteFavorite">
+                <input type="hidden" name="pageId" value="@f.PageId" />
+                <input class="btn-outline-primary" type="submit" value="&#128420;" />
+            </form>
+        </div>
+        <hr />
+    }
 }

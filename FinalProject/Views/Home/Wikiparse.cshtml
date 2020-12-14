@@ -13,10 +13,6 @@
         <input type="hidden" name="PageId" value="@ViewBag.PageId" />
         <input type="submit" value="&#10084;" />
     </form>
-    <form asp-controller="Favorites" asp-action="DeleteFavorite">
-        <input type="hidden" name="pageId" value="@ViewBag.PageId" />
-        <input type="submit" value="&#128420;" />
-    </form>
 </div>
 <form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>
 <div id="wiki">
