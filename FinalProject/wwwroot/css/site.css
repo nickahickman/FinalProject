@@ -58,9 +58,11 @@ html {
   min-height: 100%;
 }
 
-body {
+body, body h1 {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background: #1D3577;
+  color: #F1FAEE;
 }
 .footer {
   position: absolute;
@@ -76,4 +78,66 @@ body {
 
 #trendingList {
     list-style-type: none;
+}
+
+.Contentcontainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.spinner {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    animation: anim 1s linear .5s infinite;
+}
+
+    .spinner:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-top: solid 10px #457B9D;
+        border-right: solid 10px transparent;
+        border-bottom: solid 10px transparent;
+        border-left: solid 10px transparent;
+        border-radius: 100%;
+    }
+
+@keyframes anim {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+h1, h2 {
+    color: #313131;
+    text-align: center;
+}
+#indexContainer {
+    
+}
+#trendingContainer form {
+    display: inline;
+}
+.buttonWidth{
+    width: 200px;
+}
+
+.bg-custom {
+    background-color: #457B9D;
+}
+    #searchButton:hover {
+        background-color: #A8DADC;
+    }
+footer a {
+    color: white;
 }

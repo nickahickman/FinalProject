@@ -6,13 +6,12 @@
     <title>@ViewData["Title"] - FinalProject</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <script src="~/js/speechScript.js" defer></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 bg-custom">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FinalProject</a>
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">LRNR</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +20,10 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Favorites" asp-action="ViewFavorites">Favorites</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Favorites" asp-action="ViewFavorites">Favorites</a>
                         </li>
                     </ul>
                 </div>
@@ -37,7 +36,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-light bg-custom">
         <div class="container">
             &copy; 2020 - FinalProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
