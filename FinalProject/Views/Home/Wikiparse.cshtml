@@ -11,30 +11,46 @@
         <input type="hidden" name="Title" value="@ViewBag.Title" />
         <input type="hidden" name="Source" value="wikipedia" />
         <input type="hidden" name="PageId" value="@ViewBag.PageId" />
-        <input type="submit" value="&#10084;" />
+        <input type="submit" value="&#10084;" class="btn" />
     </form>
 </div>
-<form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>
-<div id="wiki">
-    @foreach (String s in Model)
-    {
-        if (s.StartsWith("Chapter:"))
-        {
-            <h4>@s</h4>
-            <hr />
-        }
-        else if (s.StartsWith("Section: "))
-        {
-            <h5>@s</h5>
-        }
-        else
-        {
-            <p class="text-justify">@s</p>
-        }
-    }
+@*<form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>*@
+<audio controls style="width:500px" id="player">
+    <source src="1234.mp3" type="audio/mp3">
+</audio>
+<div class="container">
+    <div class="row">
+        <div id="wiki" class="col-9">
+            @foreach (String s in Model)
+            {
+                if (s.StartsWith("Chapter:"))
+                {
+                    <h4>@s</h4>
+                    <hr />
+                }
+                else if (s.StartsWith("Section: "))
+                {
+                    <h5>@s</h5>
+                }
+                else
+                {
+                    <p class="text-justify">@s</p>
+                }
+            }
+        </div>
+        <div id="relatedArticle" class="col-3">
+            <h4>Related Articles</h4>
+            @{
+                foreach (String s in ViewBag.Links)
+                {
+                    <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title=@s><input type="submit" value="@s" style="width: 100%; white-space: normal;" class="btn btn-primary bg-custom" /></form>
+                }
+            }
+        </div>
+    </div>
 </div>
-<form asp-controller="Home" asp-action="RelatedArticles" method="post">
+@*<form asp-controller="Home" asp-action="RelatedArticles" method="post">
     <input type="hidden" name="title" value="@ViewBag.Title" />
     <input type="hidden" name="subwiki" value="wikipedia" />
     <input type="submit" value="RelatedArticles" />
-</form>
+</form>*@

@@ -84,8 +84,10 @@ namespace FinalProject.Controllers
             WikiTextParser wtp = new WikiTextParser();
             WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
             List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
+            List<string> links = await wtp.GetArticleLinks($"https://en.wikipedia.org/?curid={war.parse.pageid}", title);
             ViewBag.Title = war.parse.title;
             ViewBag.PageId = war.parse.pageid;
+            ViewBag.Links = links;
             if (subwiki.Equals("wikibooks"))
             {
                 return View("WikiParseBook", paragraphs);

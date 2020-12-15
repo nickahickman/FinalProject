@@ -1,21 +1,24 @@
 ﻿@model List<string>
 
-<h1>Welcome to LRNR!</h1>
-<h3>Search</h3>
-<form asp-action="WikiSearch">
-    <p>Select Wikipedia or Sister Project</p>
-    <input type="radio" name="subwiki" value="wikipedia" checked /><label for="wikipedia"> Wikipedia</label><br />
-    <input type="radio" name="subwiki" value="wikibooks" /><label for="wikipedia"> Wikibooks</label><br />
-    <input type="radio" name="subwiki" value="wikinews" /><label for="wikipedia"> Wikinews</label><br />
-    <input type="text" name="query" required />
-    <input class="btn-outline-primary" type="submit" />
-</form>
 
-<h3>Trending Topics</h3>
-<ul id="trendingList">
-    @foreach (String s in Model)
-    {
-        <li><form asp-action="WikiSearch" asp-route-subwiki="wikipedia" asp-route-query=@s><input type="submit" value="@s" /></form></li>
-    }
-</ul>
 
+
+    <h1 style="text-align: center;">Welcome to LRNR!</h1>
+    <h3 style="text-align: center;">Search</h3>
+    <form asp-action="WikiSearch" class="justify-content-center" style="text-align: center;">
+        <p>Search Articles on Wikipedia</p>
+        <input type="hidden" value="wikipedia" name="subwiki" />
+        <input type="text" name="query" required /><br />
+        <input id="searchButton" class="btn btn-info bg-custom" type="submit" />
+    </form>
+    <br />
+    <h3>Trending Topics</h3>
+    <br />
+    <div id="indexContainer" class="container-fluid d-flex">
+        <div id="trendingContainer" class="justify-content-center">
+            @foreach (String s in Model)
+            {
+                <form asp-action="WikiSearch" asp-route-subwiki="wikipedia" asp-route-query=@s><input type="submit" value="@s" class="btn btn-outline-light buttonWidth" /></form>
+            }
+        </div>
+    </div>
