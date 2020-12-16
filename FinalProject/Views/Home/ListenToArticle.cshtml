@@ -3,9 +3,49 @@
 *@
 @{
 }
-<div class="spinner"></div>
-<h1>Processing...</h1>
-<h2>Longer articles will take a while</h2>
-<audio controls style="width:500px" id="player">
-    <source src="@ViewBag.FileURL" type="audio/mp3">
-</audio>
+<div class="contentContainer">
+    <div class="spinner"></div>
+    <h1 class="processingMessage">Processing...</h1>
+    <h2 class="processingMessage">Longer articles will take a while</h2>
+</div>
+<div id="player">
+    <audio controls style="width:500px">
+        <source src="@ViewBag.fileURL" type="audio/mp3">
+    </audio>
+</div>
+
+<script>
+    let player = document.querySelector('audio');
+    let playerContainer = document.querySelector('#player');
+    let spinner = document.querySelector('.spinner');
+    let message = document.querySelector('.container h1');
+    let message2 = document.querySelector('.container h2');
+    console.log("@ViewBag.fileURL");
+
+    playerContainer.style.display = 'none';
+
+    let checkForAudio = setInterval(function () {
+        fetch("@ViewBag.fileURL")
+            .then(response => {
+
+                if (response.ok) {
+                    hideProcessingMessage();
+                    loadAudio();
+                    clearInterval(checkForAudio);
+                }
+
+            });
+    }, 500);
+
+    function loadAudio() {
+        player.load();
+        playerContainer.style.display = 'inline';
+    }
+
+    function hideProcessingMessage() {
+        spinner.classList.add('hidden');
+        message.classList.add('hidden');
+        message2.classList.add('hidden');
+    }
+
+</script>
