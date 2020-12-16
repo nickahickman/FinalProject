@@ -3,22 +3,38 @@
 }
 @model Favorites
 
+<style>
+    div#favorite {
+        background-color: #F1FAEE;
+        border: solid 2px #457B9D;
+        border-radius: 10px;
+        box-shadow: 1px 1px 1px #999;
+        color: #444444;
+        margin-left: auto;
+        margin-right: auto;
+        width: 33%;
+        padding: 2em;
+    }
+</style>
+
 <h1>Update Favorite Tags</h1>
 <hr />
-<h6>You are about to modify the current Favorite's Tags:</h6>
+<h6>You are about to modify the current Tags for the Favorite:</h6>
 
-<p style="margin-left: 2em">Title: @Model.Title</p>
-<p style="margin-left: 2em">Source: @Model.Source</p>
-<p style="margin-left: 2em">Page ID: @Model.PageId</p>
-<p style="margin-left: 2em">Started: @Model.HasStarted</p>
-<p style="margin-left: 2em">Finished: @Model.HasFinished</p>
+<div id="favorite">
+    <p><b>Title:</b> @Model.Title</p>
+    @*<p style="margin-left: 2em">Source: @Model.Source</p>
+        <p style="margin-left: 2em">Page ID: @Model.PageId</p>
+        <p style="margin-left: 2em">Started: @Model.HasStarted</p>
+        <p style="margin-left: 2em">Finished: @Model.HasFinished</p>*@
+</div>
+<hr />
 
 <h6>Please enter the tags that you would like to assign to this Favorite.</h6>
-<p>Use the "|" key to separate the tags. Any text between these symbols will count as a singular tag. </p>
-<p>Deleting all text will have it so that this Favorite has no tags. Limit at 100 characters.</p>
+<p style="font-size: 0.5rem"><i>Use the "|" key to separate the tags. Any text between these symbols will count as a singular tag. Deleting all text will have it so that this Favorite has no tags. Limit at 100 characters.</i></p>
 
 <form asp-controller="Favorites" asp-action="ApplyTagChanges" method="post">
     <input type="hidden" name="Id" value="@Model.Id" />
     <input type="text" name="Tags" value="@Model.Tags" maxlength="100" size="100"/>
-    <input type="submit" value="Apply Changes" />
+    <input type="submit" class="btn btn-primary bg-custom" value="Apply Changes" />
 </form>
