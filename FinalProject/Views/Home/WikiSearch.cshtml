@@ -2,35 +2,96 @@
     ViewData["Title"] = "Search Results";
 }
 @model WikipediaSearchRoot
-<h4>@Model.query.searchinfo.totalhits results were found!</h4>
 
 
-
-@foreach (Search item in Model.query.search)
-{
-    <p>Title: @item.title</p>
-    <input hidden name="pageid" Page Id: @item.pageid />
-    <input hidden name="size" Size: @item.size />
-    <p>Word Count:@item.wordcount</p>
-    <p>Last Updated: @item.timestamp.ToShortDateString()</p>
-    @if (ViewBag.SubWiki.Equals("wikipedia"))
-    {
-        <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title="@item.title">
-            <input class="btn-outline-primary" type="submit" value="Read Wikipedia Article" />
-        </form>
-    }
-    else if (ViewBag.SubWiki.Equals("wikibooks"))
-    {
-        <form asp-action="WikiParse" asp-route-subwiki="wikibooks" asp-route-title="@item.title">
-            <input class="btn-outline-primary" type="submit" value="Read WikiBook" />
-        </form>
-    }
-    else if (ViewBag.SubWiki.Equals("wikinews"))
-    {
-        <form asp-action="WikiParse" asp-route-subwiki="wikinews" asp-route-title="@item.title">
-            <input class="btn-outline-primary" type="submit" value="Read Wikinews" />
-        </form>
+<style>
+    table {
+        border-collapse: separate;
+        color: #444444;
+        width: 100%;
     }
 
-    <hr />
-}
+    th {
+        background-color: #A8DADC;
+        border-bottom: solid 2px #457B9D;
+        border-top: solid 2px #457B9D;
+        box-shadow: 1px 1px 1px #999;
+        padding: 2px;
+        width: 25%;
+    }
+
+    td {
+        background-color: #F1FAEE;
+        border-bottom: solid 2px #457B9D;
+        border-top: solid 2px #457B9D;
+        box-shadow: 1px 1px 1px #999;
+        padding: 2px;
+        width: 30%;
+    }
+
+    tr th:first-child {
+        border-left: solid 2px #457B9D;
+        border-top-left-radius: 10px;
+    }
+
+    tr th:last-child {
+        border-right: solid 2px #457B9D;
+        border-top-right-radius: 10px;
+        text-align: center;
+    }
+
+    tr td:first-child {
+        border-left: solid 2px #457B9D;
+    }
+
+    tr td:last-child {
+        border-right: solid 2px #457B9D;
+        text-align: center;
+    }
+
+        tr td:last-child div {
+            display: inline-block;
+        }
+
+    tr:first-child td:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    tr:first-child td:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+    }
+
+    tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+    }
+</style>
+
+<h2 style="color:#F1FAEE;">Search Results</h2>
+
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Word Count</th>
+        <th>Last Updated</th>
+        <th> </th>
+    </tr>
+
+    @foreach (Search item in Model.query.search)
+    {
+        <tr>
+            <td>@item.title</td>
+            <td>@item.wordcount</td>
+            <td>@item.timestamp.ToShortDateString()</td>
+            <td>
+                <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title="@item.title">
+                    <input value="Read" class="btn btn-info bg-custom" type="submit" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>
