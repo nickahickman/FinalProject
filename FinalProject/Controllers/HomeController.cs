@@ -144,30 +144,6 @@ namespace FinalProject.Controllers
             return View(links);
         }
 
-        public IActionResult RelatedArticles(string subwiki, string title)
-        {
-            CategoriesRoot cr = WikipediaDAL.GetCategories(subwiki, title);
-            Category[] catArray = cr.query.pages.page.categories; // PageID goofyness here
-
-            List<Categorymember[]> catMemArrList = new List<Categorymember[]>();
-            foreach (Category c in catArray)
-            {
-                string catTitle = c.title;
-                if (catTitle.Contains("Articles"))
-                {
-                    continue;
-                }
-                else
-                {
-                    CategoryMembersRoot cmr = WikipediaDAL.GetCategoryMembers(subwiki, catTitle);
-                    Categorymember[] cm = cmr.query.categorymembers;
-                    catMemArrList.Add(cm);
-                }
-            }
-
-            return View(catMemArrList);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
