@@ -3,6 +3,72 @@
 }
 @model List<Favorites>
 
+    <style>
+        table {
+            border-collapse: separate;
+            color: #444444;
+            width: 100%;
+        }
+
+        th {
+            background-color: #A8DADC;
+            border-bottom: solid 2px #457B9D;
+            border-top: solid 2px #457B9D;
+            box-shadow: 1px 1px 1px #999;
+            padding: 2px;
+            width: 33%;
+        }
+
+        td {
+            background-color: #F1FAEE;
+            border-bottom: solid 2px #457B9D;
+            border-top: solid 2px #457B9D;
+            box-shadow: 1px 1px 1px #999;
+            padding: 2px;
+            width: 33%;
+        }
+
+        tr th:first-child {
+            border-left: solid 2px #457B9D;
+            border-top-left-radius: 10px;
+        }
+
+        tr th:last-child {
+            border-right: solid 2px #457B9D;
+            border-top-right-radius: 10px;
+            text-align: center;
+        }
+
+        tr td:first-child {
+            border-left: solid 2px #457B9D;
+        }
+
+        tr td:last-child {
+            border-right: solid 2px #457B9D;
+            text-align: center;
+        }
+
+        tr td:last-child div {
+            display: inline-block;
+        }
+
+        tr:first-child td:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        tr:first-child td:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+    </style>
+
 <h1>Favorites</h1>
 <hr />
 @if (Model.Count == 0)
@@ -13,47 +79,63 @@ else
 {
     <form asp-controller="Favorites" asp-action="ViewFavorites" method="post">
         <input type="text" name="sortTag" required />
-        <input class="btn-outline-primary" type="submit" value="Sort By Tag" />
+        <input class="btn btn-primary bg-custom" type="submit" value="Sort By Tag" />
     </form>
     <hr />
-    @foreach (Favorites f in Model)
-    {
-        <p>Title: @f.Title</p>
-        <p>Source: @f.Source</p>
-        <p>Page ID: @f.PageId</p>
-        <p>Started: @f.HasStarted</p>
-        <p>Finished: @f.HasFinished</p>
+    <table>
+        <tr>
+            <th>Article</th>
+            <th>Tags</th>
+            <th>Commands</th>
+        </tr>
+        @foreach (Favorites f in Model)
+        {
+            <tr>
+                <td>
+                    @f.Title
+                </td>
+                @*<p>Source: @f.Source</p>
+                <p>Page ID: @f.PageId</p>
+                <p>Started: @f.HasStarted</p>
+                <p>Finished: @f.HasFinished</p>*@
 
-        @if (f.Tags.Length == 0)
-        {
-            <p>Tags: (none)</p>
-        }
-        else
-        {
-            string tags = "";
-            List<string> tagList = f.Tags.Split("|").ToList();
-            foreach (string tag in tagList)
-            {
-                if (tag.Trim().Length > 0)
+                @if (f.Tags.Length == 0)
                 {
-                    tags += tag.Trim();
-                    tags += ", ";
+                    <td>(none)</td>
                 }
-            }
-            <p>Tags: @tags</p>
+                else
+                {
+                    string tags = "";
+                    List<string> tagList = f.Tags.Split("|").ToList();
+                    foreach (string tag in tagList)
+                    {
+                        if (tag.Trim().Length > 0)
+                        {
+                            tags += tag.Trim();
+                            tags += ", ";
+                        }
+                    }
+                    <td>@tags</td>
+                }
+                <td>
+                    <div>
+                        <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
+                            <input data-toggle="tooltip" data-placement="top" title="Go To Article" class="btn" type="submit" value="&#8618;" />
+                        </form>
+                    </div>
+                    <div>
+                        <form asp-controller="Favorites" asp-action="UpdateFavorite" asp-route-Id="@f.Id">
+                            <input data-toggle="tooltip" data-placement="top" title="Modify Tags" class="btn" type="submit" value="&#128278;" />
+                        </form>
+                    </div>
+                    <div>
+                        <form asp-controller="Favorites" asp-action="DeleteFavorite">
+                            <input type="hidden" name="pageId" value="@f.PageId" />
+                            <input data-toggle="tooltip" data-placement="top" title="Unfavorite" class="btn" type="submit" value="&#128420;" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
         }
-        <div>
-            <form asp-controller="Home" asp-action="WikiParse" asp-route-subwiki="@f.Source" asp-route-title="@f.Title">
-                <input class="btn-outline-primary" type="submit" value="&#8618;" />
-            </form>
-            <form asp-controller="Favorites" asp-action="UpdateFavorite" asp-route-Id="@f.Id">
-                <input class="btn-outline-primary" type="submit" value="&#128278;" />
-            </form>
-            <form asp-controller="Favorites" asp-action="DeleteFavorite">
-                <input type="hidden" name="pageId" value="@f.PageId" />
-                <input class="btn-outline-primary" type="submit" value="&#128420;" />
-            </form>
-        </div>
-        <hr />
-    }
+    </table>
 }
