@@ -1,24 +1,29 @@
 ﻿@model List<string>
 
 
+<script language="javascript" type="text/javascript">
+function removeSpaces(string) {
+ return string.trim(' ');
+}
+</script>
 
 
-    <h1 style="text-align: center;">Welcome to LRNR!</h1>
-    <h3 style="text-align: center;">Search</h3>
-    <form asp-action="WikiSearch" class="justify-content-center" style="text-align: center;">
-        <p>Search Articles on Wikipedia</p>
-        <input type="hidden" value="wikipedia" name="subwiki" />
-        <input type="text" name="query" required /><br />
-        <input id="searchButton" class="btn btn-info bg-custom" type="submit" />
-    </form>
-    <br />
-    <h3>Trending Topics</h3>
-    <br />
-    <div id="indexContainer" class="container-fluid d-flex">
-        <div id="trendingContainer" class="justify-content-center">
-            @foreach (String s in Model)
-            {
-                <form asp-action="WikiSearch" asp-route-subwiki="wikipedia" asp-route-query=@s><input type="submit" value="@s" class="btn btn-outline-light buttonWidth" /></form>
-            }
-        </div>
+<h1 style="text-align: center;">Welcome to LRNR!</h1>
+<h3 style="text-align: center;">Search</h3>
+<form asp-action="WikiSearch" class="justify-content-center" style="text-align: center;">
+    <p>Search Articles on Wikipedia</p>
+    <input type="hidden" value="wikipedia" name="subwiki" />
+    <input type="text" name="query" onblur="this.value=removeSpaces(this.value)" required /><br />
+    <input id="searchButton" class="btn btn-info bg-custom" type="submit" />
+</form>
+<br />
+<h3>Trending Topics</h3>
+<br />
+<div id="indexContainer" class="container-fluid d-flex">
+    <div id="trendingContainer" class="justify-content-center">
+        @foreach (String s in Model)
+        {
+            <form asp-action="WikiSearch" asp-route-subwiki="wikipedia" asp-route-query=@s><input type="submit" value="@s" class="btn btn-outline-light buttonWidth" /></form>
+        }
     </div>
+</div>
