@@ -72,26 +72,32 @@
 
 <h2 style="color:#F1FAEE;">Search Results</h2>
 
-
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Word Count</th>
-        <th>Last Updated</th>
-        <th> </th>
-    </tr>
-
-    @foreach (Search item in Model.query.search)
-    {
+@if (Model.query.searchinfo.totalhits == 0)
+{
+    <h4 style="text-align: center;">No results found.</h4>
+}
+else
+{
+    <table>
         <tr>
-            <td>@item.title</td>
-            <td>@item.wordcount</td>
-            <td>@item.timestamp.ToShortDateString()</td>
-            <td>
-                <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title="@item.title">
-                    <input value="Read" class="btn btn-info bg-custom" type="submit" />
-                </form>
-            </td>
+            <th>Title</th>
+            <th>Word Count</th>
+            <th>Last Updated</th>
+            <th> </th>
         </tr>
-    }
-</table>
+
+        @foreach (Search item in Model.query.search)
+        {
+            <tr>
+                <td>@item.title</td>
+                <td>@item.wordcount</td>
+                <td>@item.timestamp.ToShortDateString()</td>
+                <td>
+                    <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title="@item.title">
+                        <input value="Read" class="btn btn-info bg-custom" type="submit" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+}
