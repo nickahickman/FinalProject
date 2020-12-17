@@ -135,11 +135,12 @@ namespace FinalProject.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("ListenToArticle", "Home", new { fileURL });
+            return RedirectToAction("ListenToArticle", "Home", new { war.parse.title, fileURL });
         }
 
-        public IActionResult ListenToArticle(string fileURL)
+        public IActionResult ListenToArticle(string title, string fileURL)
         {
+            ViewBag.Title = title;
             ViewBag.FileURL = fileURL;
             return View();
         }

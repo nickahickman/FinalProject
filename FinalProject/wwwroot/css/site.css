@@ -127,6 +127,7 @@ h1, h2 {
 #trendingContainer form {
     display: inline;
 }
+
 .buttonWidth{
     width: 200px;
 }
@@ -134,9 +135,15 @@ h1, h2 {
 .bg-custom {
     background-color: #457B9D;
 }
-    #searchButton:hover {
-        background-color: #A8DADC;
-    }
+
+.bg-backbutton {
+    background-color: #E63946;
+}
+
+#searchButton:hover {
+    background-color: #A8DADC;
+}
+
 footer a {
     color: white;
 }
