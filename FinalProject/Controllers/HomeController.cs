@@ -135,16 +135,8 @@ namespace FinalProject.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("ListenToArticle", "Home", new { war.parse.title, fileURL });
+            return RedirectToAction("Wikiparse", "Home", new { subwiki, title });
         }
-
-        public IActionResult ListenToArticle(string title, string fileURL)
-        {
-            ViewBag.Title = title;
-            ViewBag.FileURL = fileURL;
-            return View();
-        }
-
 
         public async Task<IActionResult> ViewLinks(string subwiki, string title)
         {

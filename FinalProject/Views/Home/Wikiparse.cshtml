@@ -12,7 +12,7 @@
         <input type="hidden" name="Source" value="wikipedia" />
         <input type="hidden" name="PageId" value="@ViewBag.PageId" />
         <input type="hidden" name="Article" value="@String.Join(",", Model)" />
-        <input type="submit" value="&#10084;" class="btn" data-toggle="tooltip" data-placement="top" title="Add to Playlist"/>
+        <input type="submit" value="&#10084;" class="btn" data-toggle="tooltip" data-placement="top" title="Add to Playlist" />
     </form>
 </div>
 @if (ViewBag.fileURL == null)
@@ -23,11 +23,25 @@
         </form>
     </div>
 }
-else 
-{ 
-<audio controls style="width:500px" id="player">
-    <source src="@ViewBag.fileURL" type="audio/mp3">
-</audio>
+else
+{
+
+<div class="processingMessage" style="text-align: center;">
+    <div class="spinner" style="margin-left: auto; margin-right: auto;"></div>
+    <p>Processing <br /> this might take a few minutes</p>
+</div>
+    
+    <div id="player">
+        <audio controls style="margin-left: auto; margin-right: auto; width: 80%; display: block">
+            <source src="@ViewBag.fileURL" type="audio/mp3">
+        </audio>
+    </div>
+
+    @*<div style="text-align: center;">
+        <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title=@ViewBag.Title>
+            <input type="submit" value="Return To Article" class="btn btn-primary bg-backbutton" />
+        </form>
+    </div>*@
 }
 
 <div class="container">
@@ -61,3 +75,34 @@ else
         </div>
     </div>
 </div>
+<script>
+    let player = document.querySelector('audio');
+    let playerContainer = document.querySelector('#player');
+    let processing = document.querySelector('.processingMessage');
+    console.log("@ViewBag.fileURL");
+
+    playerContainer.style.display = 'none';
+
+    let checkForAudio = setInterval(function () {
+        fetch("@ViewBag.fileURL")
+            .then(response => {
+
+                if (response.ok) {
+                    hideProcessingMessage();
+                    loadAudio();
+                    clearInterval(checkForAudio);
+                }
+
+            });
+    }, 500);
+
+    function loadAudio() {
+        player.load();
+        playerContainer.style.display = 'inline';
+    }
+
+    function hideProcessingMessage() {
+        processing.classList.add('hidden');
+    }
+
+</script>
