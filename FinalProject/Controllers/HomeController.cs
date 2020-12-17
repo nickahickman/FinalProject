@@ -112,16 +112,16 @@ namespace FinalProject.Controllers
             ViewBag.PageId = war.parse.pageid;
             ViewBag.FileURL = fileURL;
 
-            //Audiofiles af = new Audiofiles();
-            //af.SectionNumber = 1;
-            //af.PageId = war.parse.pageid;
-            //af.StorageAddress = fileURL;
+            Audiofiles af = new Audiofiles();
+            af.SectionNumber = 1;
+            af.PageId = war.parse.pageid;
+            af.StorageAddress = fileURL;
 
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Audiofiles.Add(af);
-            //    _context.SaveChanges();
-            //}
+            if (ModelState.IsValid)
+            {
+                _context.Audiofiles.Add(af);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("ListenToArticle", "Home", new { fileURL });
         }

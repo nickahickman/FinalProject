@@ -12,10 +12,11 @@ namespace FinalProject.Models
     {
         public static async Task<string> SynthesizeAudioAsync(string article, string title)
         {
-            AmazonPollyClient apc = new AmazonPollyClient(Secret.AWSAccessKey, Secret.AWSSecretKey, Amazon.RegionEndpoint.USEast2);
+            AmazonPollyClient apc = new AmazonPollyClient(Secret.AWSAccessKey, Secret.AWSSecretKey, Amazon.RegionEndpoint.USEast1);
             StartSpeechSynthesisTaskRequest req = new StartSpeechSynthesisTaskRequest();
+            req.Engine = "neural";
             req.OutputFormat = "mp3";
-            req.OutputS3BucketName = "lrnr";
+            req.OutputS3BucketName = "lrnr-neural";
             req.Text = article;
             req.VoiceId = "Matthew";
 
@@ -24,6 +25,11 @@ namespace FinalProject.Models
             return response.SynthesisTask.OutputUri;
         }
 
+        public static string BuildSSMLRequest(string article)
+        {
+            string req = $"<speak>{article}</speak>";
 
+            return req;
+        }
     }
 }
