@@ -1,17 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = $"{ViewBag.Title}";
 }
 <div class="contentContainer">
     <div class="spinner"></div>
     <h1 class="processingMessage">Processing...</h1>
-    <h2 class="processingMessage">Longer articles will take a while</h2>
+    <h2 class="processingMessage">Average load time on articles is around 20 seconds.<br />Longer articles will take a while longer.</h2>
 </div>
-<div id="player">
-    <audio controls style="width:500px">
+<div id="player" style="text-align: center;">
+    <audio controls style="width: 500px;">
         <source src="@ViewBag.fileURL" type="audio/mp3">
     </audio>
+</div>
+
+<div style="text-align: center;">
+    <form asp-action="WikiParse" asp-route-subwiki="wikipedia" asp-route-title=@ViewBag.Title>
+        <input type="submit" value="Return To Article" class="btn btn-primary bg-backbutton" />
+    </form>
 </div>
 
 <script>
