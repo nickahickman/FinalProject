@@ -80,7 +80,7 @@ body, body h1 {
     list-style-type: none;
 }
 
-.Contentcontainer {
+.contentContainer {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -119,7 +119,6 @@ body, body h1 {
 }
 
 h1, h2 {
-    color: #313131;
     text-align: center;
 }
 #indexContainer {
