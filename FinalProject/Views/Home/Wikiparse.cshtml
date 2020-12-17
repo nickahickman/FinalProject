@@ -11,14 +11,20 @@
         <input type="hidden" name="Title" value="@ViewBag.Title" />
         <input type="hidden" name="Source" value="wikipedia" />
         <input type="hidden" name="PageId" value="@ViewBag.PageId" />
+        <input type="hidden" name="Article" value="@String.Join(",", Model)" />
         <input type="submit" value="&#10084;" class="btn" />
     </form>
 </div>
-
-<form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>
+@if (ViewBag.fileURL == null)
+{
+    <form asp-action="BuildAudioFile" asp-route-subwiki="wikipedia" asp-route-title="@ViewBag.Title"><input type="submit" value="Listen" /></form>
+}
+else 
+{ 
 <audio controls style="width:500px" id="player">
-    <source src="1234.mp3" type="audio/mp3">
+    <source src="@ViewBag.fileURL" type="audio/mp3">
 </audio>
+}
 <div class="container">
     <div class="row">
         <div id="wiki" class="col-9">
@@ -51,7 +57,7 @@
     </div>
 </div>
 @*<form asp-controller="Home" asp-action="RelatedArticles" method="post">
-    <input type="hidden" name="title" value="@ViewBag.Title" />
-    <input type="hidden" name="subwiki" value="wikipedia" />
-    <input type="submit" value="RelatedArticles" />
-</form>*@
+        <input type="hidden" name="title" value="@ViewBag.Title" />
+        <input type="hidden" name="subwiki" value="wikipedia" />
+        <input type="submit" value="RelatedArticles" />
+    </form>*@
