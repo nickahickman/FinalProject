@@ -28,12 +28,29 @@ namespace FinalProject.Controllers
 
         // CREATE
         [HttpPost]
-        public IActionResult AddFavorite(string Title, string Source, int PageId)
+        public async Task<IActionResult> AddFavorite(string Title, string Source, int PageId, string Article)
         {
             // Check if the Favorite already exists
             string userKey = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<Favorites> userFavorites = _context.Favorites.Where(x => x.UserId == userKey).ToList();
             List<Favorites> checkTarget = userFavorites.Where(x => x.PageId == PageId).ToList();
+            List<Audiofiles> matches = _context.Audiofiles.Where(x => x.PageId == PageId).ToList();
+
+            if (matches.Count == 0)
+            {
+                string fileURL = await TextToSpeech.SynthesizeAudioAsync(Article, Title);
+
+                Audiofiles af = new Audiofiles();
+                af.SectionNumber = 1;
+                af.PageId = PageId;
+                af.StorageAddress = fileURL;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Audiofiles.Add(af);
+                    _context.SaveChanges();
+                }
+            }
 
             // If it doesn't already exist, create a new one.
             if (checkTarget.Count == 0)

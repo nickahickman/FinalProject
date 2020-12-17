@@ -85,9 +85,21 @@ namespace FinalProject.Controllers
             WikipediaParseRoot war = WikipediaDAL.ParseWikitext(subwiki, title);
             List<string> paragraphs = await wtp.GetParagraphs($"https://en.{subwiki}.org/?curid={war.parse.pageid}");
             List<string> links = await wtp.GetArticleLinks($"https://en.wikipedia.org/?curid={war.parse.pageid}", title);
+            List<Audiofiles> matches = _context.Audiofiles.Where(x => x.PageId == war.parse.pageid).ToList();
+
+            if (matches.Count == 0)
+            {
+                ViewBag.fileURL = null;
+            }
+            else 
+            {
+                ViewBag.fileURL = matches[0].StorageAddress;
+            }
+
             ViewBag.Title = war.parse.title;
             ViewBag.PageId = war.parse.pageid;
             ViewBag.Links = links;
+
             if (subwiki.Equals("wikibooks"))
             {
                 return View("WikiParseBook", paragraphs);
