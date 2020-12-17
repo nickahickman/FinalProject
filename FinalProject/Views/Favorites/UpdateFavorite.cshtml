@@ -31,7 +31,7 @@
 <hr />
 
 <h6>Please enter the tags that you would like to assign to this Favorite.</h6>
-<p style="font-size: 0.5rem"><i>Use the "|" key to separate the tags. Any text between these symbols will count as a singular tag. Deleting all text will have it so that this Favorite has no tags. Limit at 100 characters.</i></p>
+<p style="font-size: 0.75rem"><i>Use the "|" key to separate the tags. Any text between these symbols will count as a singular tag. Deleting all text will have it so that this Favorite has no tags. Limit at 100 characters.</i></p>
 
 <form asp-controller="Favorites" asp-action="ApplyTagChanges" method="post">
     <input type="hidden" name="Id" value="@Model.Id" />
