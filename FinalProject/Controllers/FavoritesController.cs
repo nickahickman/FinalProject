@@ -91,7 +91,7 @@ namespace FinalProject.Controllers
             List<Favorites> sortedFavs = new List<Favorites>(favorites);
             foreach(Favorites f in favorites)
             {
-                if (f.Tags.Contains(sortTag))
+                if (f.Tags.ToLower().Contains(sortTag.ToLower()))
                 {
                     sortedFavs.Remove(f);
                     sortedFavs.Insert(0, f);
